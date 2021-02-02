@@ -22,3 +22,18 @@ def standardize_data(data):
         df_dummies = pd.concat([df_dummies, dummies], axis=1)
         del df_dummies[column_name]
     return df_dummies
+
+
+
+def create_balanced_sample_weights(y_train, largest_class_weight_coef):
+    classes = y_train.unique()
+    classes.sort()
+    class_samples = np.bincount(y_train)
+    total_samples = class_samples.sum()
+    n_classes = len(class_samples)
+    weights = total_samples / (n_classes * class_samples * 1.0)
+    class_weight_dict = {key: value for (key, value) in zip(classes, weights)}
+    class_weight_dict[classes[1]] = class_weight_dict[classes[1]] * largest_class_weight_coef
+    sample_weights = [class_weight_dict[y] for y in y_train]
+
+    return sample_weights
