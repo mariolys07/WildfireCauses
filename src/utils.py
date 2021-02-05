@@ -25,17 +25,10 @@ def standardize_data(data):
 
 
 
-def create_balanced_sample_weights(y_train, largest_class_weight_coef):
-    classes = y_train.unique()
-    classes.sort()
-    class_samples = np.bincount(y_train)
-    total_samples = class_samples.sum()
-    n_classes = len(class_samples)
-    weights = total_samples / (n_classes * class_samples * 1.0)
-    class_weight_dict = {key: value for (key, value) in zip(classes, weights)}
-    class_weight_dict[classes[1]] = class_weight_dict[classes[1]] * largest_class_weight_coef
-    sample_weights = [class_weight_dict[y] for y in y_train]
-
-    return sample_weights
-
 cause_for_code = {8: 'Miscellaneous', 0: 'Lightning', 4: 'Debris Burning', 3: 'Campfire', 1: 'Equipment Use', 6: 'Arson', 7: 'Children', 5: 'Railroad', 2: 'Smoking', 10: 'Powerline', 11: 'Structure', 9: 'Fireworks', 12: 'Missing/Undefined'}
+
+def print_f1_scores(f1_score_result, cause_for_code=cause_for_code):
+    n = len(f1_score_result)
+    all_tuples = [(cause_for_code[i], f1_score_result[i]) for i in range(n)]
+    df_f1_score = pd.DataFrame(all_tuples, columns=['Causes Description', 'F1 scores'])
+    return df_f1_score
