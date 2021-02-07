@@ -4,6 +4,11 @@ import numpy as np
 import math
 
 def standardize_data(data):
+    """
+    Input:
+        data: data frame with original information
+    
+    """
     df_copy = data.copy()
 
     df_copy['FIRE_YEAR'] = df_copy['FIRE_YEAR']/2000 # year column 
@@ -24,8 +29,10 @@ def standardize_data(data):
     return df_dummies
 
 
-
-cause_for_code = {8: 'Miscellaneous', 0: 'Lightning', 4: 'Debris Burning', 3: 'Campfire', 1: 'Equipment Use', 6: 'Arson', 7: 'Children', 5: 'Railroad', 2: 'Smoking', 10: 'Powerline', 11: 'Structure', 9: 'Fireworks', 12: 'Missing/Undefined'}
+cause_for_code = {8: 'Miscellaneous', 0: 'Lightning', 4: 'Debris Burning', 
+                  3: 'Campfire', 1: 'Equipment Use', 6: 'Arson', 7: 'Children', 
+                  5: 'Railroad', 2: 'Smoking', 10: 'Powerline', 11: 'Structure', 
+                  9: 'Fireworks', 12: 'Missing/Undefined'}
 
 def print_f1_scores(f1_score_result, cause_for_code=cause_for_code):
     n = len(f1_score_result)

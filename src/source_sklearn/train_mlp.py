@@ -35,20 +35,14 @@ def model_fn(model_dir):
 
 if __name__ == '__main__':
     
-    # All of the model parameters and training parameters are sent as arguments
-    # when this script is executed, during a training job
     
-    # Here we set up an argument parser to easily access the parameters
     parser = argparse.ArgumentParser()
 
-    # SageMaker parameters, like the directories for training data and saving models; set automatically
-    # Do not need to change
     parser.add_argument('--output-data-dir', type=str, default=os.environ['SM_OUTPUT_DATA_DIR'])
     parser.add_argument('--model-dir', type=str, default=os.environ['SM_MODEL_DIR'])
     parser.add_argument('--data-dir', type=str, default=os.environ['SM_CHANNEL_TRAIN'])
     
     
-    # args holds all passed-in arguments
     args = parser.parse_args()
 
     # Read in csv training file
@@ -63,9 +57,7 @@ if __name__ == '__main__':
 #     occurrence_rate_majority_class = (occurrence_count.most_common(1)[0][1])/n
 #     sample_weights_train_y = create_balanced_sample_weights(train_y, occurrence_rate_majority_class)
     
-    model = MLPClassifier(random_state=1, hidden_layer_sizes=(20,), verbose=True, max_iter=50)
-    model.fit(train_x, train_y)
-    
+    model = MLPClassifier(random_state=1, hidden_layer_sizes=(50s,), verbose=True, max_iter=100, learning_rate_init=0.005)
     model.fit(train_x, train_y)
     
     joblib.dump(model, os.path.join(args.model_dir, "model.joblib"))
