@@ -6,8 +6,9 @@ import math
 def standardize_data(data):
     """
     Input:
-        data: data frame with original information
-    
+        data: dataframe
+    Output:
+        df_dummies: new dataframe with standarized columns
     """
     df_copy = data.copy()
 
@@ -34,7 +35,16 @@ cause_for_code = {8: 'Miscellaneous', 0: 'Lightning', 4: 'Debris Burning',
                   5: 'Railroad', 2: 'Smoking', 10: 'Powerline', 11: 'Structure', 
                   9: 'Fireworks', 12: 'Missing/Undefined'}
 
+cause_for_code_refinement = {0: 'Lightning', 1: 'Debris Burning', 2: 'Arson', 3: 'Miscellaneous', 4:'Missing/Undefined', 5: 'Other' }
+
 def print_f1_scores(f1_score_result, cause_for_code=cause_for_code):
+    """
+    Input:
+        f1_score_result: an array of probability values
+        cause_for_code: a dictionary that maps integer classes to corresponding cause descriptions
+    Output:
+        df_f1_score: a dataframe with cause descriptions and their f1 scores
+    """
     n = len(f1_score_result)
     all_tuples = [(cause_for_code[i], f1_score_result[i]) for i in range(n)]
     df_f1_score = pd.DataFrame(all_tuples, columns=['Causes Description', 'F1 scores'])

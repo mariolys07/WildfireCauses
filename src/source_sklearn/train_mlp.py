@@ -8,21 +8,9 @@ import joblib
 import numpy as np
 from sklearn.neural_network import MLPClassifier
 
-# def create_balanced_sample_weights(y_train, largest_class_weight_coef):
-#     classes = y_train.unique()
-#     classes.sort()
-#     class_samples = np.bincount(y_train)
-#     total_samples = class_samples.sum()
-#     n_classes = len(class_samples)
-#     weights = total_samples / (n_classes * class_samples * 1.0)
-#     class_weight_dict = {key: value for (key, value) in zip(classes, weights)}
-#     class_weight_dict[classes[1]] = class_weight_dict[classes[1]] * largest_class_weight_coef
-#     sample_weights = [class_weight_dict[y] for y in y_train]
-
-#     return sample_weights
-
 def model_fn(model_dir):
-    """Load model from the model_dir. This is the same model that is saved
+    """
+    Load model from the model_dir. This is the same model that is saved
     in the main if statement.
     """
     print("Loading model.")
@@ -45,19 +33,96 @@ if __name__ == '__main__':
     
     args = parser.parse_args()
 
-    # Read in csv training file
     training_dir = args.data_dir
-    train_data = pd.read_csv(os.path.join(training_dir, "train.csv"), header=None, names=None)
+    train_data = pd.read_csv(os.path.join(training_dir, "train_ref.csv"), header=None, names=None)
 
     # Labels are in the first column
     train_y = train_data.iloc[:,0]
     train_x = train_data.iloc[:,1:]
-#     n = train_y.shape[0]
-#     occurrence_count = Counter(list(train_y)) 
-#     occurrence_rate_majority_class = (occurrence_count.most_common(1)[0][1])/n
-#     sample_weights_train_y = create_balanced_sample_weights(train_y, occurrence_rate_majority_class)
     
-    model = MLPClassifier(random_state=1, hidden_layer_sizes=(50s,), verbose=True, max_iter=100, learning_rate_init=0.005)
+    """
+    Refinement attempts:
+    MODEL 1:
+    model = MLPClassifier(random_state=1, hidden_layer_sizes=(50,), verbose=True, max_iter=100, learning_rate_init=0.005)
+    Loss: 1.20
+    The accuracy for val set is: 0.4157066765762418
+    The accuracy for test set is: 0.40956052320009023
+    TEST:
+    Causes Description	F1 scores
+    0	Lightning	0.621717
+    1	Debris Burning	0.523913
+    2	Arson	0.266126
+    3	Miscellaneous	0.389600
+    4	Missing/Undefined	0.096244
+    5	Other	0.272116
+    VAL:
+    Causes Description	F1 scores
+    0	Lightning	0.621647
+    1	Debris Burning	0.526512
+    2	Arson	0.294259
+    3	Miscellaneous	0.327812
+    4	Missing/Undefined	0.127157
+    5	Other	0.296449
+    
+    
+    Model 2: 
+    model = MLPClassifier(random_state=1, hidden_layer_sizes=(50,), verbose=True, max_iter=100, learning_rate_init=0.05)
+    Iteration 13, loss = 1.29906690
+    Training loss did not improve more than tol=0.000100 for 10 consecutive epochs. Stopping.
+    2021-02-10 05:57:59,538 sagemaker-containers INFO     Reporting training SUCCESS
+
+    Model 3:
+    model = MLPClassifier(random_state=1, hidden_layer_sizes=(25,), verbose=True, max_iter=100, learning_rate_init=0.005)
+    Iteration 100, loss = 1.20385515
+    /miniconda3/lib/python3.7/site-packages/sklearn/neural_network/_multilayer_perceptron.py:585: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (100) reached and the optimization hasn't converged yet
+    The accuracy for val set is: 0.41752100319875257
+    The accuracy for test set is: 0.39891892653774597
+    TESTS:
+    Causes Description	F1 scores
+    0	Lightning	0.619219
+    1	Debris Burning	0.513346
+    2	Arson	0.287825
+    3	Miscellaneous	0.369872
+    4	Missing/Undefined	0.089993
+    5	Other	0.276137
+    VAL:
+    Causes Description	F1 scores
+    0	Lightning	0.618398
+    1	Debris Burning	0.521118
+    2	Arson	0.308528
+    3	Miscellaneous	0.336867
+    4	Missing/Undefined	0.155206
+    5	Other	0.308634
+    
+    Model 4:
+    model = MLPClassifier(random_state=1, hidden_layer_sizes=(25,), verbose=True, max_iter=100, learning_rate_init=0.05)
+    Iteration 13, loss = 1.30057939
+    2021-02-10 06:52:08 Uploading - Uploading generated training modelIteration 14, loss = 1.30060966
+    Training loss did not improve more than tol=0.000100 for 10 consecutive epochs. Stopping.
+    2021-02-10 06:52:06,114 sagemaker-containers INFO     Reporting training SUCCESS
+    The accuracy for val set is: 0.4085368075137896
+    The accuracy for test set is: 0.3815188588825619
+    Test:
+    Causes Description	F1 scores
+    0	Lightning	0.579014
+    1	Debris Burning	0.483936
+    2	Arson	0.272922
+    3	Miscellaneous	0.300102
+    4	Missing/Undefined	0.089003
+    5	Other	0.262530
+    Val:
+    Causes Description	F1 scores
+    0	Lightning	0.582622
+    1	Debris Burning	0.519680
+    2	Arson	0.364454
+    3	Miscellaneous	0.257893
+    4	Missing/Undefined	0.114709
+    5	Other	0.287345
+    
+    """
+    
+    
+    model = MLPClassifier(random_state=1, hidden_layer_sizes=(25,), verbose=True, max_iter=100, learning_rate_init=0.009)
     model.fit(train_x, train_y)
     
     joblib.dump(model, os.path.join(args.model_dir, "model.joblib"))

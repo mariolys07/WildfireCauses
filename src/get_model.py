@@ -8,6 +8,15 @@ import xgboost
 
 
 def get_model_weights(model_data_path, dest, method): # method in {'joblib', 'mxnet', pickle}
+    """
+    Input:
+        model_data_path: Model path in sagemaker
+        dest: destination path where the model will be saved
+        method: whether the model is in {'joblib', 'mxnet', pickle} format
+    Output:
+        loaded_model: loaded model
+    """
+    
     if not os.path.isfile(dest):
         fs = s3fs.S3FileSystem()
 
