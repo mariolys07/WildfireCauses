@@ -119,10 +119,43 @@ if __name__ == '__main__':
     4	Missing/Undefined	0.114709
     5	Other	0.287345
     
+    Model 5:
+    model = MLPClassifier(random_state=1, hidden_layer_sizes=(25,), verbose=True, max_iter=100, learning_rate_init=0.009)
+    Training loss did not improve more than tol=0.000100 for 10 consecutive epochs. Stopping.
+    2021-02-10 20:35:50,294 sagemaker-containers INFO     Reporting training SUCCESS
+    
+    Model 6:
+    model = MLPClassifier(random_state=1, hidden_layer_sizes=(25,), verbose=True, max_iter=100, learning_rate_init=0.0001)
+    Training loss did not improve more than tol=0.000100 for 10 consecutive epochs. Stopping.
+    2021-02-10 21:15:55,931 sagemaker-containers INFO     Reporting training SUCCESS
+    
+    Model 7:
+    model = MLPClassifier(random_state=1, hidden_layer_sizes=(25,), verbose=True, max_iter=200, learning_rate_init=0.005)
+    Iteration 200, loss = 1.19330057
+    /miniconda3/lib/python3.7/site-packages/sklearn/neural_network/_multilayer_perceptron.py:585: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (200) reached and the optimization hasn't converged yet.
+    The accuracy for val set is: 0.41180842459614836
+    The accuracy for test set is: 0.3902012741726335
+    Test
+    Causes Description	F1 scores
+    0	Lightning	0.612258
+    1	Debris Burning	0.495596
+    2	Arson	0.298165
+    3	Miscellaneous	0.376625
+    4	Missing/Undefined	0.098685
+    5	Other	0.257304
+    Causes Description	F1 scores
+    0	Lightning	0.615521
+    1	Debris Burning	0.506771
+    2	Arson	0.321058
+    3	Miscellaneous	0.353165
+    4	Missing/Undefined	0.144904
+    5	Other	0.290898
+    
+    
     """
     
     
-    model = MLPClassifier(random_state=1, hidden_layer_sizes=(25,), verbose=True, max_iter=100, learning_rate_init=0.009)
+    model = MLPClassifier(random_state=1, hidden_layer_sizes=(25,), verbose=True, max_iter=200, learning_rate_init=0.005)
     model.fit(train_x, train_y)
     
     joblib.dump(model, os.path.join(args.model_dir, "model.joblib"))
