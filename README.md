@@ -1,6 +1,6 @@
 # Introduction
 
-This is my Capstone project for the Udacity Machine Learning Engineer Nanodegree.
+This is my Capstone project for the **Udacity Machine Learning Engineer Nanodegree.**
 
 The goal is to build a machine learning model inspired by the following question posed under the “Inspiration” header of [Kaggle’s 1.88 Million US Wildfires dataset](https://www.kaggle.com/rtatman/188-million-us-wildfires);
 
