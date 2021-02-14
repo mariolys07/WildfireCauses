@@ -8,7 +8,7 @@ The goal is to build a machine learning model inspired by the following question
 
 The input features for my model include the wildfire’s date, time of discovery, (geopolitical) state, and estimated size (in acres). Its output will be a cause amongst all possible wildfire causes in the dataset.
 
-More details can be found in the [`report.pdf`](blob/main/report.pdf) file.
+More details can be found in the [`report.pdf`](report.pdf) file.
 
 # Implementation
 The results of this project can be reproduced by loading the repo into an [Amazon SageMaker](https://aws.amazon.com/sagemaker/) Notebook Instance. The notebooks in the `src/` directory can be executed in the order specified by their filename prefixes.
@@ -23,34 +23,34 @@ You may need to specify the following Notebook kernels:
 
 ## Documents
 
-* [`proposal.pdf`](blob/main/proposal.pdf) - Project proposal.
-* [`report.pdf`](blob/main/report.pdf) - Overview of the project and results.
+* [`proposal.pdf`](proposal.pdf) - Project proposal.
+* [`report.pdf`](report.pdf) - Overview of the project and results.
 
 ## Data
 
-The data used in this project was obtained from [Kaggle’s 1.88 Million US Wildfires dataset](https://www.kaggle.com/rtatman/188-million-us-wildfires) and is stored in the [`src/wildfire_data`](tree/main/src/wildfire_data) directory. This data can be loaded using the function `load_raw_wildfire_data` from [`src/utils.py`](blob/main/src/utils.py).
+The data used in this project was obtained from [Kaggle’s 1.88 Million US Wildfires dataset](https://www.kaggle.com/rtatman/188-million-us-wildfires) and is stored in the [`src/wildfire_data`](src/wildfire_data) directory. This data can be loaded using the function `load_raw_wildfire_data` from [`src/utils.py`](src/utils.py).
 
 ## Notebooks
 
 Notebooks in this repository are numbered and are meant to be executed in the order listed below. The `2_Feature_Engineering.ipynb` notebook generates new `pkl` and `csv` files into the `src/wildfire_data` directory. These are essential to the other notebooks.
 
-* [`1_Data_Exploration.ipynb`](blob/main/src/1_Data_Exploration.ipynb) - For exploratory purposes.
-* [`2_Feature_Engineering.ipynb`](blob/main/src/2_Feature_Engineering.ipynb) - Preprocess and store train, validation and test data.
-* [`3_Train_Linear_Model.ipynb`](blob/main/src/3_Train_Linear_Model.ipynb) - Train a Linear Learner model.
-* [`4_Train_MLP_Model.ipynb`](blob/main/src/4_Train_MLP_Model.ipynb) - Train an MLP model.
-* [`5_Train_XGB_Model.ipynb`](blob/main/src/5_Train_XGB_Model.ipynb) - Train a XGBoost model.
-* [`6_Train_Refined_MLP_Model.ipynb`](blob/main/src/6_Train_Refined_MLP_Model.ipynb) - Train a refined MLP model with a reduced output classes.
-* [`7_Interpretability.ipynb`](blob/main/src/7_Interpretability.ipynb) - Explore feature importance under MLP model.
+* [`1_Data_Exploration.ipynb`](src/1_Data_Exploration.ipynb) - For exploratory purposes.
+* [`2_Feature_Engineering.ipynb`](src/2_Feature_Engineering.ipynb) - Preprocess and store train, validation and test data.
+* [`3_Train_Linear_Model.ipynb`](src/3_Train_Linear_Model.ipynb) - Train a Linear Learner model.
+* [`4_Train_MLP_Model.ipynb`](src/4_Train_MLP_Model.ipynb) - Train an MLP model.
+* [`5_Train_XGB_Model.ipynb`](src/5_Train_XGB_Model.ipynb) - Train a XGBoost model.
+* [`6_Train_Refined_MLP_Model.ipynb`](src/6_Train_Refined_MLP_Model.ipynb) - Train a refined MLP model with a reduced output classes.
+* [`7_Interpretability.ipynb`](src/7_Interpretability.ipynb) - Explore feature importance under MLP model.
 
 ## Other Python Code
 
-* [`utils.py`](blob/main/src/utils.py) - Basic helper functions including data loading.
-* [`get_model.py`](blob/main/src/get_model.py) - Helper function to download SageMaker trained models.
-* [`mlp_source/train_mlp.py`](blob/main/src/mlp_source/train_mlp.py) - Entry point for MLP model training.
+* [`utils.py`](src/utils.py) - Basic helper functions including data loading.
+* [`get_model.py`](src/get_model.py) - Helper function to download SageMaker trained models.
+* [`mlp_source/train_mlp.py`](src/mlp_source/train_mlp.py) - Entry point for MLP model training.
 
 ## Models
 
-* [`models/`](tree/main/src/models) - All models trained by notebooks 3, 4, 5, and 6 above, as archived by SageMaker.
+* [`models/`](src/models) - All models trained by notebooks 3, 4, 5, and 6 above, as archived by SageMaker.
 
 ## Generated Data
 
