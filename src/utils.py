@@ -6,19 +6,26 @@ import numpy as np
 import pandas as pd
 import boto3
 
-def load_raw_wildfire_data():
-    if os.path.isfile("wildfire_data/Fires.pkl"):
-        # This code loads the data from a local file.
-        # Two files are used to avoid large files.
-
-        with open("wildfire_data/Fires0.pkl", "rb") as file: fires0 = file.read()
-        with open("wildfire_data/Fires1.pkl", "rb") as file: fires1 = file.read()
-            
-        fires = fires0 + fires1
+def load_raw_wildfire_data(paths = None):
+    
+    if isinstance(paths, str):
+        paths = [paths]
         
+    paths = paths or ["wildfire_data/Fires0.pkl", "wildfire_data/Fires1.pkl"]
+    
+    if len(paths) > 0 and os.path.isfile(paths[0]):
+        # This code loads the data from a local file.
+        # Multiple files can be used to avoid large files.
+        
+        fires = b''
+        
+        for path in paths:
+            with open(path, "rb") as file:
+                fires += file.read()
+                
         df = pickle.loads(fires)
         
-        print("Loaded from local file.")
+        print("Loaded from local files.")
 
     else:
         # This code loads it from from an S3 bucket
