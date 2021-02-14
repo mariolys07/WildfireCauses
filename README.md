@@ -17,7 +17,7 @@ You may need to specify the following Notebook kernels:
 
 * `conda_amazonei_mxnet_p36` for the the `3_Train_Linear_Model.ipynb` notebook.
 * `conda_mxnet_python36` for the `7_Interpretability.ipynb` notebook.
-* `conda_python36` for all other notebooks.
+* `conda_python3` for all other notebooks.
 
 # In this repository
 
