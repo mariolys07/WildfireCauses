@@ -39,7 +39,7 @@ Notebooks in this repository are numbered and are meant to be executed in the or
 * [`3_Train_Linear_Model.ipynb`](src/3_Train_Linear_Model.ipynb) - Train a Linear Learner model.
 * [`4_Train_MLP_Model.ipynb`](src/4_Train_MLP_Model.ipynb) - Train an MLP model.
 * [`5_Train_XGB_Model.ipynb`](src/5_Train_XGB_Model.ipynb) - Train a XGBoost model.
-* [`6_Train_Refined_MLP_Model.ipynb`](src/6_Train_Refined_MLP_Model.ipynb) - Train a refined MLP model with a reduced output classes.
+* [`6_Train_Refined_MLP_Model.ipynb`](src/6_Train_Refined_MLP_Model.ipynb) - Train a refined MLP model with reduced output classes.
 * [`7_Interpretability.ipynb`](src/7_Interpretability.ipynb) - Explore feature importance under MLP model.
 
 ## Other Python Code
