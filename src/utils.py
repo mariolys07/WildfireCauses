@@ -1,43 +1,60 @@
+import io
+import os
 import math
-import pandas as pd 
+import pickle
 import numpy as np
-import math
+import pandas as pd
+import boto3
 
-def standardize_data(data):
-    """
-    Input:
-        data: dataframe
-    Output:
-        df_dummies: new dataframe with standarized columns
-    """
-    df_copy = data.copy()
+def load_raw_wildfire_data():
+    if os.path.isfile("wildfire_data/Fires.pkl"):
+        # This code loads the data from a local file.
+        # Two files are used to avoid large files.
 
-    df_copy['FIRE_YEAR'] = df_copy['FIRE_YEAR']/2000 # year column 
-    df_copy['DISCOVERY_DOY_SIN'] = df_copy['DISCOVERY_DOY'].apply(lambda x: math.sin(2 * math.pi * x /366)) # Discovery DOY 
-    df_copy['DISCOVERY_DOY_COS'] = df_copy['DISCOVERY_DOY'].apply(lambda x: math.cos(2 * math.pi * x/366)) # Discovery DOY
-    df_copy['FIRE_SIZE'] = df_copy['FIRE_SIZE'].apply(lambda x: np.log(x))# fire size
-    del df_copy['DISCOVERY_DOY']
-    
-    # dummies variables
-    df_dummies = df_copy
-    object_type_columns = [column_name for column_name in df_dummies.columns 
-                       if pd.api.types.is_object_dtype(df_dummies[column_name].dtype)]
-    for column_name in object_type_columns:
-        dummies = pd.get_dummies(df_dummies[column_name])
-        del dummies[dummies.columns[-1]]
-        df_dummies = pd.concat([df_dummies, dummies], axis=1)
-        del df_dummies[column_name]
-    return df_dummies
+        with open("wildfire_data/Fires0.pkl", "rb") as file: fires0 = file.read()
+        with open("wildfire_data/Fires1.pkl", "rb") as file: fires1 = file.read()
+            
+        fires = fires0 + fires1
+        
+        df = pickle.loads(fires)
+        
+        print("Loaded from local file.")
 
+    else:
+        # This code loads it from from an S3 bucket
 
-cause_for_code = {8: 'Miscellaneous', 0: 'Lightning', 4: 'Debris Burning', 
-                  3: 'Campfire', 1: 'Equipment Use', 6: 'Arson', 7: 'Children', 
-                  5: 'Railroad', 2: 'Smoking', 10: 'Powerline', 11: 'Structure', 
-                  9: 'Fireworks', 12: 'Missing/Undefined'}
+        s3_client = boto3.client('s3')
+        bucket_name = 'wildfires'
 
-cause_for_code_refinement = {0: 'Lightning', 1: 'Debris Burning', 2: 'Arson', 3: 'Miscellaneous', 4:'Missing/Undefined', 5: 'Other' }
+        # get a list of objects in the bucket
+        obj_list=s3_client.list_objects(Bucket=bucket_name)
 
-def print_f1_scores(f1_score_result, cause_for_code=cause_for_code):
+        # print object(s)in S3 bucket
+        files=[]
+        for contents in obj_list['Contents']:
+            files.append(contents['Key'])
+
+        file_name = files[0]
+        data_object = s3_client.get_object(Bucket=bucket_name, Key=file_name)
+
+        data_body = data_object["Body"].read()
+        data_stream = io.BytesIO(data_body)
+        df = pd.read_pickle(data_stream)
+        
+        print("Loaded from S3 bucket.")
+        
+    return df
+
+def get_cause_names():
+    with open("wildfire_data/cause_names.pkl", "rb") as file: names = pickle.load(file)
+    return names
+
+def get_cause_names_refinement():
+    with open("wildfire_data/cause_names_refinement.pkl", "rb") as file: names = pickle.load(file)
+    return names
+
+def print_f1_scores(f1_score_result, cause_for_code=None):
+    cause_for_code = cause_for_code or get_cause_names()
     """
     Input:
         f1_score_result: an array of probability values

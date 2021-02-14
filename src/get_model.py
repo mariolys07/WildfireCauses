@@ -1,9 +1,9 @@
-import s3fs
+import os
+import pickle
 import tarfile
 import joblib
-import os
+import s3fs
 import mxnet as mx
-import pickle
 import xgboost 
 
 
